@@ -1,7 +1,11 @@
 import url from './url';
+import * as fs from './fs';
+import * as path from './path';
 
 const ctx = {
   url,
+  fs,
+  path,
 };
 
 export default {

@@ -7,8 +7,26 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: () => import('../page/home'),
+      redirect: { name: 'home' },
+      name: 'root',
+      component: () => import(/* webpackChunkName: root */ '../page/index.vue'),
+      children: [
+        {
+          path: 'home',
+          name: 'home',
+          component: () => import(/* webpackChunkName: home */'../page/home'),
+        },
+        {
+          path: 'image-minify',
+          name: 'image-minify',
+          component: () => import(/* webpackChunkName: image-minify */'../page/image-minify'),
+        },
+        {
+          path: 'todo',
+          name: 'todo',
+          component: () => import(/* webpackChunkName: todo */'../page/todo'),
+        },
+      ],
     },
     {
       path: '*',
