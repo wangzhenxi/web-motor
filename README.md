@@ -1,8 +1,9 @@
+
 # web-motor
 
-> let web develop easier
+开发者效率工具，解决一些开发中的痛点
 
-#### Build Setup
+## 开发
 
 ``` bash
 # install dependencies
@@ -13,13 +14,16 @@ npm run dev
 
 # build electron application for production
 npm run build
-
-
-# lint all JS/Vue component files in `src/`
-npm run lint
-
 ```
 
----
+## 功能描述
 
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+### 图片压缩
+
+- 通过遍历文件树，读取文件后缀，根据筛选的图片格式进行压缩
+- 会直接将压缩文件替换掉源文件
+- 压缩方案源自[手搓一个TinyPng压缩图片](https://juejin.cn/post/6882551009219575815)
+
+## 开发计划
+
+- 详见[Github Project](https://github.com/wangzhenxi/web-motor/projects/1)
