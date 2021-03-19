@@ -5,11 +5,7 @@
       {{ dirpath }}
     </p>
     <el-checkbox-group v-model="exts">
-      <el-checkbox
-        v-for="item in options"
-        :key="item"
-        :label="item"
-      />
+      <el-checkbox v-for="item in options" :key="item" :label="item" />
     </el-checkbox-group>
     <!-- TODO: 中文转英文 -->
     <el-button @click="submit">执行</el-button>
@@ -24,10 +20,7 @@ export default {
   data() {
     return {
       dirpath: '',
-      options: [
-        '.png',
-        '.jpg',
-      ],
+      options: ['.png', '.jpg'],
       exts: [],
     };
   },
@@ -60,7 +53,6 @@ export default {
       const { dirpath } = this;
       // h偶去图片
       const images = await this.getImages(dirpath);
-      const paths = images.map(item => path.join(item.dirpath, item.filename));
       try {
         await Promise.all(images.map(async (item) => {
           const filepath = path.join(item.dirpath, item.filename);

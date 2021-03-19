@@ -2,15 +2,13 @@
 import Https from 'https';
 import Url from 'url';
 import fs from 'fs';
-import chalk from 'chalk';
 import figures from 'figures';
-// import ora from 'ora';
 
 const TINYIMG_URL = 'tinypng.com';
 
 function getRandomHeader() {
   // 随机IP
-  const ip = new Array(4).fill(0).map(() => parseInt(Math.random() * 255)).join('.');
+  const ip = new Array(4).fill(0).map(() => Math.floor(Math.random() * 255)).join('.');
 
   return {
     headers: {
@@ -33,7 +31,7 @@ function uploadImg(file) {
     const req = Https.request(opts, (res) => {
       res.on('data', (data) => {
         const obj = JSON.parse(data.toString());
-        obj.error ? reject(obj.message) : resolve(obj);
+        resolve(obj);
       });
     });
     req.write(file, 'binary');
@@ -48,7 +46,9 @@ function downloadImg(url) {
     const req = Https.request(opts, (res) => {
       let file = '';
       res.setEncoding('binary');
-      res.on('data', chunk => file += chunk);
+      res.on('data', (chunk) => {
+        file += chunk;
+      });
       res.on('end', () => resolve(file));
     });
     req.on('error', e => reject(e));
@@ -66,16 +66,16 @@ async function compressImg(filepath) {
     const file = fs.readFileSync(filepath, 'binary');
     const obj = await uploadImg(file);
     const data = await downloadImg(obj.output.url);
-    const oldSize = chalk.redBright(obj.input.size);
-    const newSize = chalk.greenBright(obj.output.size);
-    const ratio = chalk.blueBright(1 - obj.output.ratio, 2, true);
-    const msg = `${figures.tick} Compressed [${chalk.yellowBright(filepath)}] completed: Old Size ${oldSize}, New Size ${newSize}, Optimization Ratio ${ratio}`;
+    const oldSize = obj.input.size;
+    const newSize = obj.output.size;
+    const ratio = 1 - obj.output.ratio;
+    const msg = `${figures.tick} Compressed [${filepath}] completed: Old Size ${oldSize}, New Size ${newSize}, Optimization Ratio ${ratio}`;
     Object.assign(res, {
       data,
       msg,
     });
   } catch (err) {
-    const msg = `${figures.cross} Compressed [${chalk.yellowBright(filepath)}] failed: ${chalk.redBright(err)}`;
+    const msg = `${figures.cross} Compressed [${filepath}] failed: ${err}`;
     Object.assign(res, {
       code: 500,
       msg,
